@@ -3,6 +3,7 @@ import sys
 import numpy as np
 import pandas as pd
 import pickle
+import dill
 from src.exception import CustomerException
 from sklearn.metrics import r2_score
 from sklearn.model_selection import GridSearchCV
@@ -45,5 +46,13 @@ def evaluate_models(X_train, y_train, X_test, y_test, models, params):
             report[list(models.keys())[i]] = test_model_score
         
         return report
+    except Exception as e:
+        raise CustomerException(e, sys)
+
+def load_object(file_path):
+    try:
+        with open(file_path, 'rb') as file:
+            return dill.load(file)
+    
     except Exception as e:
         raise CustomerException(e, sys)
